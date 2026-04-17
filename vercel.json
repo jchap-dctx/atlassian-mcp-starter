@@ -1,9 +1,5 @@
 {
-  "functions": {
-    "api/mcp.mjs": {
-      "runtime": "@vercel/node"
-    }
-  },
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
       "source": "/mcp",
