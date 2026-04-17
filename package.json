@@ -5,12 +5,17 @@
   "type": "module",
   "description": "Read-only MCP starter for Jira and Confluence on-prem",
   "scripts": {
+    "build": "next build",
+    "dev": "next dev",
     "start": "node app.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.4",
     "dotenv": "^17.2.3",
     "mcp-handler": "^1.0.2",
+    "next": "^15.3.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "zod": "^3.25.76"
   }
 }
