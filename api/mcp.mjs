@@ -1,28 +1,52 @@
 import "dotenv/config";
 
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { createMcpHandler } from "mcp-handler";
 
-import { createServer } from "../server.mjs";
-
-export const config = {
-  runtime: "nodejs",
-};
+import { registerTools } from "../server.mjs";
 
 const VERIFY_SSL = (process.env.ATLASSIAN_VERIFY_SSL ?? "true").toLowerCase() === "true";
 
-export default async function handler(req, res) {
+if (!VERIFY_SSL) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+}
+
+const handler = createMcpHandler(
+  (server) => {
+    registerTools(server);
+  },
+  {},
+  {
+    basePath: "/api",
+    maxDuration: 60,
+    verboseLogs: true,
+  },
+);
+
+export async function GET(req) {
+  return handler(req);
+}
+
+export async function POST(req) {
+  return handler(req);
+}
+
+export async function DELETE(req) {
+  return handler(req);
+}
+
+export default async function legacyHandler(req, res) {
   if (!VERIFY_SSL) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
   }
 
-  const server = createServer();
-  const transport = new StreamableHTTPServerTransport({
-    sessionIdGenerator: undefined,
-  });
-
   try {
-    await server.connect(transport);
-    await transport.handleRequest(req, res, req.body);
+    const response = await handler(req);
+    res.statusCode = response.status;
+    response.headers.forEach((value, key) => {
+      res.setHeader(key, value);
+    });
+    const body = await response.text();
+    res.end(body);
   } catch (error) {
     console.error("Error handling MCP request", error);
     if (!res.headersSent) {
@@ -39,8 +63,5 @@ export default async function handler(req, res) {
         }),
       );
     }
-  } finally {
-    transport.close();
-    await server.close();
   }
 }

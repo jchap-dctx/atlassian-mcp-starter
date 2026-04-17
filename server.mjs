@@ -1,7 +1,7 @@
 import "dotenv/config";
 
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 const JIRA_BASE_URL = stripTrailingSlash(process.env.JIRA_BASE_URL ?? "");
 const JIRA_PAT = process.env.JIRA_PAT ?? "";
@@ -212,12 +212,7 @@ function textResult(payload) {
   };
 }
 
-export function createServer() {
-  const server = new McpServer({
-    name: "atlassian-mcp-starter",
-    version: "0.1.0",
-  });
-
+export function registerTools(server) {
   server.tool(
     "search_jira",
     "Search Jira issues visible to the current user.",
@@ -318,6 +313,14 @@ export function createServer() {
       throw new Error("Unsupported item source. Use jira: or confluence:.");
     },
   );
+}
 
+export function createServer() {
+  const server = new McpServer({
+    name: "atlassian-mcp-starter",
+    version: "0.1.0",
+  });
+
+  registerTools(server);
   return server;
 }
