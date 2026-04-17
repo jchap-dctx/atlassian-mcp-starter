@@ -22,7 +22,7 @@ The generic `search` and `fetch` tools make it easier to adapt this for ChatGPT 
 ## Files
 
 - `server.mjs` - shared MCP server logic
-- `app.mjs` - local development entrypoint
+- `local-dev.mjs` - local development entrypoint
 - `app/api/[transport]/route.js` - Vercel / Next.js MCP endpoint
 - `.env.example` - environment variable template
 - `package.json` - Node dependencies and scripts
