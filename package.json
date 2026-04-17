@@ -1,0 +1,15 @@
+{
+  "name": "atlassian-mcp-starter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Read-only MCP starter for Jira and Confluence on-prem",
+  "scripts": {
+    "start": "node app.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.4",
+    "dotenv": "^17.2.3",
+    "zod": "^3.25.76"
+  }
+}

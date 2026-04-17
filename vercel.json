@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/mcp.mjs": {
+      "runtime": "@vercel/node"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/mcp",
+      "destination": "/api/mcp"
+    }
+  ]
+}
